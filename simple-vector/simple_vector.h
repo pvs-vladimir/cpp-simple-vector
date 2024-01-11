@@ -112,10 +112,12 @@ public:
     }
 
     Type& operator[](size_t index) noexcept {
+        assert(index < size_);
         return items_[index];
     }
 
     const Type& operator[](size_t index) const noexcept {
+        assert(index < size_);
         return items_[index];
     }
 
@@ -169,6 +171,8 @@ public:
     }
 
     Iterator Insert(ConstIterator pos, const Type& value) {
+        assert(pos >= cbegin() && pos <= cend());
+        
         size_t index = std::distance(cbegin(), pos);
         Resize(size_ + 1);
         Iterator new_pos = &items_[index];
@@ -178,6 +182,8 @@ public:
     }
     
     Iterator Insert(ConstIterator pos, Type&& value) {
+        assert(pos >= cbegin() && pos <= cend());
+    
         size_t index = std::distance(cbegin(), pos);
         Resize(size_ + 1);
         Iterator new_pos = &items_[index];
@@ -193,6 +199,8 @@ public:
     }
 
     Iterator Erase(ConstIterator pos) {
+        assert(pos >= cbegin() && pos < cend());
+    
         size_t index = std::distance(cbegin(), pos);
         std::move(begin() + index + 1, end(), const_cast<Type*>(pos));
         --size_;
